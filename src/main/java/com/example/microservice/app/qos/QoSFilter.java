@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @Component
 @Slf4j
-public class QoSTimingFilter extends OncePerRequestFilter {
+public class QoSFilter extends OncePerRequestFilter {
     private static final String START_HEADER = "X-Start-Req";
 
     @Override
@@ -55,5 +55,8 @@ public class QoSTimingFilter extends OncePerRequestFilter {
                     latencyNs / 1_000_000
             );
         }
+        int status = response.getStatus();
+        boolean success = !String.valueOf(status).startsWith("5");
+        ReliabilityTracker.getInstance().recordRequest(success);
     }
 }
