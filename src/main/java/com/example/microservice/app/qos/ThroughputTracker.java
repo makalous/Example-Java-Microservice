@@ -16,7 +16,7 @@ public class ThroughputTracker {
     }
     public synchronized void recordRequest() {
         totalRequests++;
-        logCurrentReliability();
+        logCurrentThroughput();
     }
     public synchronized long getTotalRequests() {
         return totalRequests;
@@ -31,7 +31,7 @@ public class ThroughputTracker {
         double seconds = uptime.toMillis() / 1000.0;
         return seconds > 0 ? totalRequests / seconds : 0;
     }
-    private void logCurrentReliability() {
+    private void logCurrentThroughput() {
         log.info(
                 "Throughput stats: {} invocations/s",
                 getThroughputPerSecond()

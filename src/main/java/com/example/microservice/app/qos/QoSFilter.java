@@ -21,14 +21,11 @@ public class QoSFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
-
+        //Latency and Response Time
         long tServerStart = System.nanoTime(); // t2 ≈ request enters service
-
         filterChain.doFilter(request, response);
-
         long tServerEnd = System.nanoTime();   // t3 ≈ response ready
         long latencyNs = tServerEnd - tServerStart;
-
         // Response Time = now - client start
         String startHeader = request.getHeader(START_HEADER);
         if (startHeader != null) {
@@ -55,9 +52,12 @@ public class QoSFilter extends OncePerRequestFilter {
                     latencyNs / 1_000_000
             );
         }
+        //Reliability
         int status = response.getStatus();
         boolean success = !String.valueOf(status).startsWith("5");
         ReliabilityTracker.getInstance().recordRequest(success);
+        //Throughput
         ThroughputTracker.getInstance().recordRequest();
+
     }
 }

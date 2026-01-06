@@ -2,6 +2,7 @@ package com.example.microservice.app.exampleSdk.controller;
 
 import com.example.microservice.app.exampleSdk.service.ExampleSdkInterface;
 import com.example.microservice.app.global.error.ErrorResponse;
+import com.example.microservice.app.qos.IntegrityTracker;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,6 +45,10 @@ public class ExampleSdkController {
     })
     @GetMapping(value = "/getExample", produces = "application/json")
     public ResponseEntity<ExampleRspDto> getExample() {
-        return ResponseEntity.ok(exampleSdk.getExampleResource());
+        var rsp = exampleSdk.getExampleResource();
+        //Integrity
+        var integrity = IntegrityTracker.getInstance().checkIntegrity(rsp);
+        IntegrityTracker.getInstance().recordTransmission(integrity);
+        return ResponseEntity.ok(rsp);
     }
 }
