@@ -22,8 +22,6 @@ import java.time.Instant;
 @Slf4j
 @Tag(name = "Health", description = "Service health endpoints")
 public class HealthCheckController {
-    private final AvailabilityTracker availabilityTracker = AvailabilityTracker.getInstance();
-
     @Operation(
             summary = "Service health check",
             description = "Returns HTTP 200 if the service is UP"
@@ -40,11 +38,11 @@ public class HealthCheckController {
     public ResponseEntity<String> health() {
         if (Instant.now().getEpochSecond() % 2 == 0) {
             boolean isUp = true;
-            availabilityTracker.recordHealthCheck(isUp);
+            AvailabilityTracker.getInstance().recordHealthCheck(isUp);
             return ResponseEntity.ok("UP");
         } else {
             boolean isUp = false;
-            availabilityTracker.recordHealthCheck(isUp);
+            AvailabilityTracker.getInstance().recordHealthCheck(isUp);
             return ResponseEntity.ok("DOWN");
         }
     }
