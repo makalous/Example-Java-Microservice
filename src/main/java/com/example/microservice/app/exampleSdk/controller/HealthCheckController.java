@@ -43,7 +43,7 @@ public class HealthCheckController {
         } else {
             boolean isUp = false;
             AvailabilityTracker.getInstance().recordHealthCheck(isUp);
-            return ResponseEntity.ok("DOWN");
+            return ResponseEntity.internalServerError().body("DOWN");
         }
     }
 
