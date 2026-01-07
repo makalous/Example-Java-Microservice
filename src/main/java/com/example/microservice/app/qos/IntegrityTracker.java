@@ -9,8 +9,7 @@ public class IntegrityTracker {
     private long totalTransmissions = 0;
     private long correctTransmissions = 0;
 
-    private IntegrityTracker() {
-    }
+    private IntegrityTracker() {}
 
     public static IntegrityTracker getInstance() {
         return INSTANCE;
@@ -24,7 +23,7 @@ public class IntegrityTracker {
         logCurrentIntegrity();
     }
 
-    public <T> boolean checkIntegrity(T rsp) {
+    public < T > boolean checkIntegrity(T rsp) {
         try {
             String json = new ObjectMapper().writeValueAsString(rsp);
             return !json.contains("null");

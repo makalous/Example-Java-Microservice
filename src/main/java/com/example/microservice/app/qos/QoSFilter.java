@@ -24,7 +24,7 @@ public class QoSFilter extends OncePerRequestFilter {
         //Latency and Response Time
         long tServerStart = System.nanoTime(); // t2 ≈ request enters service
         filterChain.doFilter(request, response);
-        long tServerEnd = System.nanoTime();   // t3 ≈ response ready
+        long tServerEnd = System.nanoTime(); // t3 ≈ response ready
         long latencyNs = tServerEnd - tServerStart;
         // Response Time = now - client start
         String startHeader = request.getHeader(START_HEADER);
@@ -38,7 +38,7 @@ public class QoSFilter extends OncePerRequestFilter {
                         "QoS | path={} | status={} | latency={} ms | responseTime={} ms",
                         request.getRequestURI(),
                         response.getStatus(),
-                        latencyNs / 1_000_000,
+                        latencyNs / 1000000,
                         responseTimeMs
                 );
             } catch (NumberFormatException e) {
@@ -49,7 +49,7 @@ public class QoSFilter extends OncePerRequestFilter {
                     "QoS | path={} | status={} | latency={} ms",
                     request.getRequestURI(),
                     response.getStatus(),
-                    latencyNs / 1_000_000
+                    latencyNs / 1000000
             );
         }
         //Reliability

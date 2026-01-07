@@ -29,7 +29,7 @@ public class DocumentationQoSRunner implements ApplicationRunner {
     }
     private int countDocumentedEndpoints() {
         int documented = 0;
-        for (HandlerMethod method : handlerMapping.getHandlerMethods().values()) {
+        for (HandlerMethod method: handlerMapping.getHandlerMethods().values()) {
             if (isDocumented(method)) {
                 documented++;
             }
@@ -39,7 +39,7 @@ public class DocumentationQoSRunner implements ApplicationRunner {
     private boolean isDocumented(HandlerMethod method) {
         if (method.hasMethodAnnotation(Hidden.class)) return false;
         Operation op = method.getMethodAnnotation(Operation.class);
-        if (op==null || op.hidden()) return false;
+        if (op == null || op.hidden()) return false;
         return !method.getBeanType().isAnnotationPresent(Hidden.class);
     }
 }

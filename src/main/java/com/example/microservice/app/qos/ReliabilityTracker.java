@@ -9,8 +9,7 @@ public class ReliabilityTracker {
     private final AtomicLong totalRequests = new AtomicLong(0);
     private final AtomicLong successfulRequests = new AtomicLong(0);
     private final AtomicLong failedRequests = new AtomicLong(0);
-    private ReliabilityTracker() {
-    }
+    private ReliabilityTracker() {}
     public static ReliabilityTracker getInstance() {
         return INSTANCE;
     }

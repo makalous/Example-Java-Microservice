@@ -9,8 +9,7 @@ public class ThroughputTracker {
     private static final ThroughputTracker INSTANCE = new ThroughputTracker();
     private long totalRequests = 0;
     private final Instant appStartTime = Instant.now();
-    private ThroughputTracker() {
-    }
+    private ThroughputTracker() {}
     public static ThroughputTracker getInstance() {
         return INSTANCE;
     }
