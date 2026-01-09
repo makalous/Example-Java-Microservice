@@ -1,5 +1,8 @@
 package com.example.microservice.app.qos;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public final class DocumentationTracker {
     private static final DocumentationTracker INSTANCE = new DocumentationTracker();
     private DocumentationTracker() {}
@@ -12,8 +15,8 @@ public final class DocumentationTracker {
                 1.0 :
                 (double) documentedEndpoints / totalEndpoints;
 
-        System.out.printf(
-                "Documentation QoS: documented=%d total=%d coverage=%.2f%%%n",
+        log.info(
+                "Documentation QoS: documented={} total={} coverage={}%",
                 documentedEndpoints,
                 totalEndpoints,
                 coverage * 100
