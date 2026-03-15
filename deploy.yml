@@ -1,0 +1,7 @@
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Stop old app
+      shell: pkill -f app-0.1.jar || true
+    - name: Run new app
+      shell: nohup java -jar build/libs/app-0.1.jar > app.log 2>&1 &
