@@ -1,12 +1,14 @@
-package com.example.microservice.app.exampleSdk.configuration;
+package com.example.microservice.app.logic.configuration;
 
-import com.example.microservice.app.exampleSdk.service.ExampleSdkInterface;
-import com.example.microservice.app.exampleSdk.service.ExampleSdkService2;
+import com.example.microservice.app.logic.service.SimpleServiceInterface;
+import com.example.microservice.app.logic.service.SimpleServiceImplementation;
+import com.example.microservice.app.logic.service.SimpleServiceSdkImplementation;
 import com.example.microservice.app.global.property.GlobalProperties;
 import lombok.AllArgsConstructor;
 import org.example.sdk.ExampleClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -14,21 +16,25 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @Component
 @AllArgsConstructor
-public class ExampleSdkConfiguration {
+public class AppConfiguration {
     private final GlobalProperties globalProperties;
 
-//    @Bean
-//    public ExampleSdkInterface exampleSdk(final ExampleClient exampleClient) {
-//        return new ExampleSdkService(exampleClient);
-//    }
     @Bean
-    public ExampleSdkInterface exampleSdk(RestTemplate restTemplate) {
-        return new ExampleSdkService2(restTemplate);
+    public SimpleServiceInterface simpleSdk(final ExampleClient exampleClient) {
+        return new SimpleServiceSdkImplementation(exampleClient);
     }
+
+    @Bean
+    @Primary
+    public SimpleServiceInterface simpleCall(RestTemplate restTemplate) {
+        return new SimpleServiceImplementation(restTemplate);
+    }
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
     @Bean
     @Profile("host99")
     public ExampleClient exampleClient99() {

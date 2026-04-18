@@ -1,6 +1,6 @@
-package com.example.microservice.app.exampleSdk.controller;
+package com.example.microservice.app.logic.controller;
 
-import com.example.microservice.app.exampleSdk.service.ExampleSdkInterface;
+import com.example.microservice.app.logic.service.SimpleServiceInterface;
 import com.example.microservice.app.global.error.ErrorResponse;
 import com.example.microservice.app.qos.IntegrityTracker;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RequestMapping("/private")
 @Tag(name = "Example SDK", description = "Endpoints for testing the Example SDK")
-public class ExampleSdkController {
-    private ExampleSdkInterface exampleSdk;
+public class SimpleSdkController {
+    private SimpleServiceInterface exampleSdk;
 
     @Operation(
             summary = "Get example resource",

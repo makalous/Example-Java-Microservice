@@ -1,4 +1,4 @@
-package com.example.microservice.app.exampleSdk.controller;
+package com.example.microservice.app.logic.controller;
 
 import com.example.microservice.app.qos.AvailabilityTracker;
 import io.swagger.v3.oas.annotations.Operation;
