@@ -3,6 +3,7 @@ package com.example.microservice.app.global.security;
 import com.example.microservice.app.global.property.GlobalProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -32,10 +34,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             try {
-                Claims claims = Jwts.parser()
-                        .setSigningKey(globalProperties.getAuthSecretKey().getBytes())
-                        .parseClaimsJws(token)
-                        .getBody();
+                SecretKey key = Keys.hmacShaKeyFor(globalProperties.getAuthSecretKey().getBytes());
+                Claims claims = Jwts.parser().verifyWith(key)
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload();
 
                 String username = claims.getSubject();
 
