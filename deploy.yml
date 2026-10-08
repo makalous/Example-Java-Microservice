@@ -2,6 +2,26 @@
   connection: local
   tasks:
     - name: Stop old app
-      shell: pkill -f app-0.1.jar || true
+      command: pkill -f app-0.1.jar
+      register: stop
+      failed_when: stop.rc > 1        # 1 = nic do zabicia, to nie błąd
+
+    - name: Wait for port to free up
+      wait_for:
+        port: 8080
+        state: stopped
+        timeout: 30
+
     - name: Run new app
-      shell: nohup java -jar build/libs/app-0.1.jar > app.log 2>&1 & disown
+      shell: nohup java -jar build/libs/app-0.1.jar > app.log 2>&1 < /dev/null &
+      args:
+        chdir: "{{ playbook_dir }}"   # zakłada playbook w korzeniu projektu
+      environment:
+        JENKINS_NODE_COOKIE: dontKillMe   # Jenkins nie ubije procesu po buildzie
+      async: 10
+      poll: 0
+
+    - name: Wait for app to start
+      wait_for:
+        port: 8080
+        timeout: 60
