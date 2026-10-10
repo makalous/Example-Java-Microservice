@@ -1,11 +1,16 @@
 pipeline {
     agent any
-
+    
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'master', description: 'Branch to build')
+    }
+    
     stages {
 
         stage('Clone repo') {
             steps {
-                git 'https://github.com/makalous/Example-Java-Microservice.git'
+                git branch: params.BRANCH,
+                    url: 'https://github.com/makalous/Example-Java-Microservice.git'
             }
         }
 
