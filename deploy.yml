@@ -1,5 +1,4 @@
-- hosts: localhost
-  connection: local
+- hosts: rhel
   tasks:
     - name: Stop old app
       command: pkill -f app-0.1.jar
@@ -12,12 +11,20 @@
         state: stopped
         timeout: 30
 
+    - name: Create app directory
+      file:
+        path: /home/tester/app
+        state: directory
+
+    - name: Copy jar to VM
+      copy:
+        src: "{{ playbook_dir }}/build/libs/app-0.1.jar"
+        dest: /home/tester/app/app-0.1.jar
+
     - name: Run new app
-      shell: nohup java -jar build/libs/app-0.1.jar > app.log 2>&1 < /dev/null &
+      shell: nohup java -jar app-0.1.jar > app.log 2>&1 < /dev/null &
       args:
-        chdir: "{{ playbook_dir }}"   # zakłada playbook w korzeniu projektu
-      environment:
-        JENKINS_NODE_COOKIE: dontKillMe   # Jenkins nie ubije procesu po buildzie
+        chdir: /home/tester/app
       async: 10
       poll: 0
 
