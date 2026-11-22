@@ -1,7 +1,7 @@
 package com.example.microservice.app.qos;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
 public class IntegrityTracker {
