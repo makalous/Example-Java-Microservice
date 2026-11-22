@@ -1,6 +1,9 @@
 pipeline {
     agent any
-    
+    environment {
+        JAVA_HOME = '/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home'
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
+    }
     parameters {
         string(name: 'BRANCH', defaultValue: 'master', description: 'Branch to build')
     }
