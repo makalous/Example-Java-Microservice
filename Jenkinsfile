@@ -16,6 +16,7 @@ pipeline {
 
         stage('Build jar') {
             steps {
+                sh 'whoami; which java; java --version; echo $JAVA_HOME'
                 sh './gradlew build'
             }
         }
