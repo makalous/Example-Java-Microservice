@@ -25,7 +25,6 @@ public class AppConfiguration {
     }
 
     @Bean
-    @Primary
     public SimpleServiceInterface simpleCall(RestTemplate restTemplate) {
         return new SimpleServiceImplementation(restTemplate);
     }
