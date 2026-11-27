@@ -38,12 +38,12 @@ public class AppConfiguration {
     @Bean
     @Profile("host99")
     public ExampleClient exampleClient99() {
-        return new ExampleClient(globalProperties.getBaseUrlFirst());
+        return new ExampleClient(globalProperties.getBaseUrlFirst().trim());
     }
 
     @Bean
     @Profile("host100")
     public ExampleClient exampleClient100() {
-        return new ExampleClient(globalProperties.getBaseUrlSecond());
+        return new ExampleClient(globalProperties.getBaseUrlSecond().trim());
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Data
-@ConfigurationProperties(prefix = "global.property")
+@ConfigurationProperties(prefix = "global.properties")
 @Component
 public class GlobalProperties {
     private String baseUrlFirst;
