@@ -16,6 +16,7 @@ public class JwtTokenService {
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
+                .setIssuer("example-service")
                 .claim("roles", "ROLE_USER")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 24h active

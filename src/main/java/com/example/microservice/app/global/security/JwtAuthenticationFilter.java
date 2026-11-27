@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 @AllArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final GlobalProperties globalProperties;
 
@@ -35,7 +37,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = authHeader.substring(7);
             try {
                 SecretKey key = Keys.hmacShaKeyFor(globalProperties.getAuthSecretKey().getBytes());
-                Claims claims = Jwts.parser().verifyWith(key)
+                Claims claims = Jwts.parser()
+                        .verifyWith(key)
+                        .requireIssuer(globalProperties.getJwtIssuer())
                         .build()
                         .parseSignedClaims(token)
                         .getPayload();
@@ -47,8 +51,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (SignatureException e) {
-                throw new RuntimeException(String.format("JWT Token not valid for context %s", request.getContextPath()));
+            } catch (io.jsonwebtoken.JwtException e) {
+                log.warn("JWT validation failed: {}", e);
+                SecurityContextHolder.clearContext();
             }
         }
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "global.property")
 @Component
 public class GlobalProperties {
+    private String jwtIssuer;
     private String baseUrlFirst;
     private String baseUrlSecond;
     private String authSecretKey;
