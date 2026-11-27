@@ -4,17 +4,25 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 public class ThroughputTracker {
     private static final ThroughputTracker INSTANCE = new ThroughputTracker();
+    private static final List<byte[]> REQUEST_SAMPLES = new ArrayList<>();
     private long totalRequests = 0;
     private final Instant appStartTime = Instant.now();
     private ThroughputTracker() {}
     public static ThroughputTracker getInstance() {
         return INSTANCE;
     }
-    public synchronized void recordRequest() {
+    public synchronized void recordRequest(int payloadSize) {
         totalRequests++;
+
+        byte[] sample = new byte[payloadSize];
+        REQUEST_SAMPLES.add(sample);
+
         logCurrentThroughput();
     }
     public synchronized long getTotalRequests() {

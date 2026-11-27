@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -13,6 +14,8 @@ import java.io.IOException;
 @Component
 @Slf4j
 public class QoSFilter extends OncePerRequestFilter {
+    @Value("${qos.diagnostics.payload-size}")
+    private int diagnosticsPayloadSize;
     private static final String START_HEADER = "X-Start-Req";
 
     @Override
@@ -57,7 +60,6 @@ public class QoSFilter extends OncePerRequestFilter {
         boolean success = !String.valueOf(status).startsWith("5");
         ReliabilityTracker.getInstance().recordRequest(success);
         //Throughput
-        ThroughputTracker.getInstance().recordRequest();
-
+        ThroughputTracker.getInstance().recordRequest(diagnosticsPayloadSize);
     }
 }
