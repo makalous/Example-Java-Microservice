@@ -22,7 +22,7 @@
         dest: /home/tester/app/app-0.1.jar
 
     - name: Run new app
-      shell: nohup java -jar app-0.1.jar > app.log 2>&1 < /dev/null &
+      shell: nohup java -Xms64m -Xmx128m -jar app-0.1.jar > app.log 2>&1 < /dev/null &
       args:
         chdir: /home/tester/app
       async: 10

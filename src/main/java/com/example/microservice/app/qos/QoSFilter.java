@@ -57,7 +57,6 @@ public class QoSFilter extends OncePerRequestFilter {
         boolean success = !String.valueOf(status).startsWith("5");
         ReliabilityTracker.getInstance().recordRequest(success);
         //Throughput
-        ThroughputTracker.getInstance().recordRequest();
-
+        ThroughputTracker.getInstance().recordRequest(request.getRequestURI());
     }
 }
