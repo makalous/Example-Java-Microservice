@@ -14,6 +14,7 @@ import java.util.List;
 public class SimpleServiceImplementation implements SimpleServiceInterface {
     private static final String URL = "https://api.sampleapis.com/coffee/hot";
     private final RestTemplate restTemplate;
+    private final RequestHistory requestHistory;
 
     @Override
     public ExampleRspDto getExampleResource() {
@@ -23,6 +24,7 @@ public class SimpleServiceImplementation implements SimpleServiceInterface {
         toReturn.setExampleOne(rsp.getBody().get(0).getDescription());
         toReturn.setExampleTwo(rsp.getBody().get(0).getId());
         toReturn.setExampleThree(rsp.getBody().get(0).getTitle());
+        requestHistory.recordAndCount(toReturn.getExampleTwo());
         return toReturn;
     }
 }

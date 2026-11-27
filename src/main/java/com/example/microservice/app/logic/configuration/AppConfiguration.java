@@ -1,5 +1,6 @@
 package com.example.microservice.app.logic.configuration;
 
+import com.example.microservice.app.logic.service.RequestHistory;
 import com.example.microservice.app.logic.service.SimpleServiceInterface;
 import com.example.microservice.app.logic.service.SimpleServiceImplementation;
 import com.example.microservice.app.logic.service.SimpleServiceSdkImplementation;
@@ -20,14 +21,21 @@ public class AppConfiguration {
     private final GlobalProperties globalProperties;
 
     @Bean
+    public RequestHistory requestHistory() {
+        return new RequestHistory();
+    }
+
+    @Bean
     public SimpleServiceInterface simpleSdk(final ExampleClient exampleClient) {
         return new SimpleServiceSdkImplementation(exampleClient);
     }
 
     @Bean
     @Primary
-    public SimpleServiceInterface simpleCall(RestTemplate restTemplate) {
-        return new SimpleServiceImplementation(restTemplate);
+    public SimpleServiceInterface simpleCall(
+            RestTemplate restTemplate,
+            RequestHistory requestHistory) {
+        return new SimpleServiceImplementation(restTemplate, requestHistory);
     }
 
     @Bean
