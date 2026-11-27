@@ -14,6 +14,7 @@ import java.io.IOException;
 @Slf4j
 public class QoSFilter extends OncePerRequestFilter {
     private static final String START_HEADER = "X-Start-Req";
+    private final RequestHistory requestHistory = new RequestHistory();
 
     @Override
     protected void doFilterInternal(
@@ -21,6 +22,7 @@ public class QoSFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
+        requestHistory.recordRequest(request.getRequestURI());
         //Latency and Response Time
         long tServerStart = System.nanoTime(); // t2 ≈ request enters service
         filterChain.doFilter(request, response);
