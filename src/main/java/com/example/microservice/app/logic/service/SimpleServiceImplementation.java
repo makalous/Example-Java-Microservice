@@ -12,12 +12,12 @@ import java.util.List;
 
 @AllArgsConstructor
 public class SimpleServiceImplementation implements SimpleServiceInterface {
-    private static final String URL = "https://api.sampleapis.com/coffee/hot";
     private final RestTemplate restTemplate;
+    private final String coffeeApiUrl;
 
     @Override
     public ExampleRspDto getExampleResource() {
-        ResponseEntity<List<CoffeRspDto>> rsp = restTemplate.exchange(URL, HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+        ResponseEntity<List<CoffeRspDto>> rsp = restTemplate.exchange(coffeeApiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<>() {
         });
         var toReturn = new ExampleRspDto();
         toReturn.setExampleOne(rsp.getBody().get(0).getDescription());

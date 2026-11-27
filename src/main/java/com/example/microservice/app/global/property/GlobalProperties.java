@@ -11,4 +11,5 @@ public class GlobalProperties {
     private String baseUrlFirst;
     private String baseUrlSecond;
     private String authSecretKey;
+    private String coffeeApiUrl;
 }
